@@ -1,4 +1,4 @@
-export function TableRow({Idx ,Date, Name, Items, Amount}){
+export function TableRowForOrganisations({Idx ,OrgId, Name, gstNumber, contactNumber}){
     function rowColor(){
         if(Idx % 2){
             return "bg-amber-50"
@@ -8,9 +8,9 @@ export function TableRow({Idx ,Date, Name, Items, Amount}){
     }
     return <tr className={rowColor + "whitespace-nowrap hover:bg-amber-100"}>
         <td className="p-3 text-sm text-gray-700">{Idx}</td>
-        <td>{Date}</td>
+        <td>{OrgId}</td>
         <td>{Name}</td>
-        <td>{Items}</td>
-        <td>{Amount}</td>
+        <td>{gstNumber}</td>
+        <td>{contactNumber}</td>
     </tr>
 }

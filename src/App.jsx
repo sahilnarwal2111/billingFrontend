@@ -7,15 +7,17 @@ import {
 import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
 import { CreateBill } from './pages/CreateBill';
+import { CreateOrgantisation } from './pages/CreateOrg';
 
 function App() {
   return <Router>
-    <div>
+    <div> 
       <Routes>
         <Route path='/signin' element={<Sigin/>}></Route>
         <Route path='/signup' element={<Signup/>}></Route>
         <Route path='/dashboard' element={<Dashboard/>}></Route>
         <Route path='/create' element={<CreateBill/>}></Route>
+        <Route path='/orgs' element={<CreateOrgantisation/>}></Route>
       </Routes>
     </div>
   </Router>
