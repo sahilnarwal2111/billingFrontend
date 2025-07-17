@@ -12,6 +12,8 @@ export function Signup(){
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [wrongInput, setWrongInput] = useState(false)
+    const [alertMessage, setAlertMessage] = useState("");
     const navigate = useNavigate()
     return <div className="bg-slate-300 h-screen flex justify-center">
         <div className="flex flex-col justify-center">
@@ -30,21 +32,43 @@ export function Signup(){
                 <InputBox onChange={e => {
                     setPassword(e.target.value)
                 }} placeholder={"1234"} label={"Password"} />         
+                {wrongInput && 
+                    <div className='text-red-500 mt-1'>
+                        {alertMessage}
+                    </div>
+                }
+                
                 <div className="pt-4">
                     <Button onClick={async () => {
-                        const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                            email,
-                            firstName,  
-                            lastName, 
-                            password
-                        })
-                        if(response.status == 411){
+                        try{
+                            const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                                email,
+                                firstName,  
+                                lastName, 
+                                password
+                            })
                             
+                            localStorage.setItem("token", response.data.token)
+                            navigate('/dashboard')
                         }
-                        console.log("Request sent")
-                        console.log(response)
-                        localStorage.setItem("token", response.data.token)
-                        navigate('/dashboard')
+                        catch(err){
+                            console.error(err);
+                            setWrongInput(true);
+
+                            if (axios.isAxiosError(err)) {
+                                const msg = err.response?.data?.msg;
+
+                                if (msg === "Invalid Inputs !") {
+                                    setAlertMessage("Please use a stronger password !");
+                                } else if (msg === "Email already exists") {
+                                    setAlertMessage("Email already exists");
+                                } else {
+                                    setAlertMessage("Something went wrong.");
+                                }
+                            } else {
+                                setAlertMessage("Unexpected error occurred.");
+                            }
+                        }
 
                     }} label={"Sign up"} />
                 </div>

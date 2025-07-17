@@ -3,22 +3,12 @@ import { Appbar } from "../components/Appbar";
 import { Heading } from "../components/Heading";
 import { TableRowForOrganisations } from "../components/TableRowForOrganisations";
 import axios from 'axios'
+import { Modal } from "../components/Modal";
 export function CreateOrgantisation(){
     const [organisations, setOrganisations] = useState([]);
+    const [modalAppearance, setModalAppearance] = useState(false);
     useEffect(()=>{
-        async function fetchAllOrgs(){
-            try{
-                const orgs = await axios.get("http://localhost:3000/api/v1/user/organisations", {
-                    headers : {
-                        Authorization : "Bearer " + localStorage.getItem("token")
-                    }
-                })
-                setOrganisations(orgs.data.organisations)                
-            }catch(err){
-                console.log("Something went wrong " + err);
-            }
-        }
-        fetchAllOrgs()
+        fetchAllOrgs(setOrganisations)
     },[])
     return <div>
         <div>
@@ -28,7 +18,6 @@ export function CreateOrgantisation(){
             <Heading label={"All Oraganisations"} />
         </div>
         <div>
-            {console.log(organisations)}
             <div className="ml-8 mr-8 overflow-auto rounded-lg shadow">
                 <table className="w-full bg-gray-200 border-grey-200" >
                     <thead className="border-b-2 border-gray-500">
@@ -55,7 +44,24 @@ export function CreateOrgantisation(){
                         })}
                     </tbody>
                 </table>
-            </div>
+            </div>        
+        </div>
+        <div className="pl-8 pt-3">
+            <Modal setOrganisations={setOrganisations} setModalAppearance={setModalAppearance} modalAppearance={modalAppearance}/>
+
         </div>
     </div>
+}
+
+export async function fetchAllOrgs(setOrganisations){
+    try{
+        const orgs = await axios.get("http://localhost:3000/api/v1/user/organisations", {
+            headers : {
+                Authorization : "Bearer " + localStorage.getItem("token")
+            }
+        })
+        setOrganisations(orgs.data.organisations)                
+    }catch(err){
+        console.log("Something went wrong " + err);
+    }
 }

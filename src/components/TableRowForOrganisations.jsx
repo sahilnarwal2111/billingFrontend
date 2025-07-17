@@ -6,6 +6,7 @@ export function TableRowForOrganisations({Idx ,OrgId, Name, gstNumber, contactNu
             return "bg-white"
         }
     }
+    console.log(items)
     return <tr className={rowColor + "whitespace-nowrap hover:bg-amber-100"}>
         <td className="p-3 text-sm text-gray-700">{Idx}</td>
         <td>{OrgId}</td>
